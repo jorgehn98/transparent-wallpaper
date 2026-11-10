@@ -2,7 +2,9 @@
 
 Live wallpaper para Android que pone la cámara en el fondo de pantalla: lo que hay delante del móvil se ve detrás de los iconos, como si la pantalla fuese transparente. Es un juguete para ratos, no una app para llevar siempre encendida.
 
-![Estado](https://img.shields.io/badge/estado-v0.1.0-blue)
+![Estado](https://img.shields.io/badge/estado-v0.1.1-blue)
+
+Probado en un Galaxy S24 Ultra con Android 17, tanto en el inicio como en la pantalla de bloqueo. En otros fabricantes el bloqueo puede no mostrarlo.
 
 ## Uso
 
@@ -57,6 +59,8 @@ El build de release está minificado pero sin firmar: si quieres distribuirlo, c
 - El punto verde de privacidad de Android 12+ se queda encendido todo el rato. El sistema lo dibuja y no se puede ocultar sin root.
 - Consume batería y calienta. Es la razón de quedarse en 720p en vez de 1080p, y de cerrar la cámara en cuanto el wallpaper no se ve.
 - La ilusión no es perfecta: la cámara no está donde están tus ojos, así que el paralaje no coincide del todo.
+- Si enfocas una fuente de luz o una pantalla en una habitación oscura, el autoexposímetro la quema. Es el comportamiento normal de la cámara, no un fallo del render.
+- La orientación se calcula para el fondo en vertical. Si el dispositivo gira a horizontal y el lanzador rota, la imagen puede quedarse girada.
 
 ## Privacidad
 

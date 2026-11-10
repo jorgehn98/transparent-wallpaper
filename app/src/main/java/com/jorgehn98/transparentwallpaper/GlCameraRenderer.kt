@@ -12,6 +12,7 @@ import android.view.Surface
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
+import kotlin.math.abs
 
 /**
  * Pinta los frames de la cámara en el surface del wallpaper.
@@ -49,6 +50,8 @@ class GlCameraRenderer(
     private var uTexScale = 0
 
     private val texMatrix = FloatArray(16)
+
+    private var logged = false
 
     private val quadCoords = floats(
         -1f, -1f,
@@ -174,6 +177,15 @@ class GlCameraRenderer(
         surfaceTexture.updateTexImage()
         surfaceTexture.getTransformMatrix(texMatrix)
 
+        if (!logged) {
+            logged = true
+            android.util.Log.d(
+                "GlCameraRenderer",
+                "view=${viewWidth}x$viewHeight buffer=${bufferWidth}x$bufferHeight " +
+                    "matrix=${texMatrix.joinToString(",")}",
+            )
+        }
+
         GLES20.glViewport(0, 0, viewWidth.coerceAtLeast(1), viewHeight.coerceAtLeast(1))
         GLES20.glClearColor(0f, 0f, 0f, 1f)
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
@@ -240,12 +252,22 @@ class GlCameraRenderer(
      */
     private fun cropScale(): FloatArray {
         if (viewWidth <= 0 || viewHeight <= 0) return floatArrayOf(1f, 1f)
-        val bufferAspect = bufferWidth.toFloat() / bufferHeight
-        val viewAspect = viewWidth.toFloat() / viewHeight
-        return if (viewAspect > bufferAspect) {
-            floatArrayOf(1f, bufferAspect / viewAspect)
+
+        // La cámara suele entregar el frame girado 90º y la matriz de textura
+        // lo deshace. Si la matriz intercambia ejes, el aspecto visible es el
+        // inverso del buffer.
+        val swapped = abs(texMatrix[0]) < abs(texMatrix[1])
+        val imageAspect = if (swapped) {
+            bufferHeight.toFloat() / bufferWidth
         } else {
-            floatArrayOf(viewAspect / bufferAspect, 1f)
+            bufferWidth.toFloat() / bufferHeight
+        }
+        val viewAspect = viewWidth.toFloat() / viewHeight
+
+        return if (imageAspect > viewAspect) {
+            floatArrayOf(viewAspect / imageAspect, 1f)
+        } else {
+            floatArrayOf(1f, imageAspect / viewAspect)
         }
     }
 

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
@@ -30,7 +31,7 @@ class MainActivity : Activity() {
         frontCamera = findViewById(R.id.front_camera)
 
         primary.setOnClickListener { onPrimary() }
-        changeWallpaper.setOnClickListener { openWallpaperPicker() }
+        changeWallpaper.setOnClickListener { openSystemWallpaperPicker() }
         frontCamera.setOnCheckedChangeListener { _, checked ->
             WallpaperState.setFrontCamera(this, checked)
             refresh()
@@ -143,6 +144,23 @@ class MainActivity : Activity() {
                 Toast.makeText(this, R.string.error_no_picker, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun openSystemWallpaperPicker() {
+        val candidates = listOf(
+            Intent(Intent.ACTION_SET_WALLPAPER),
+            Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER),
+            Intent(Settings.ACTION_DISPLAY_SETTINGS),
+        )
+        for (candidate in candidates) {
+            try {
+                startActivity(candidate)
+                return
+            } catch (e: Exception) {
+                // Probamos el siguiente.
+            }
+        }
+        Toast.makeText(this, R.string.error_no_picker, Toast.LENGTH_LONG).show()
     }
 
     private companion object {
