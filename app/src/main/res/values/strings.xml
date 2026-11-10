@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fondo transparente</string>
+
+    <string name="intro">Pone la cámara en el fondo de pantalla: lo que hay delante del móvil se ve detrás de los iconos. La cámara solo se enciende cuando tú pulsas el botón.</string>
+
+    <string name="status_not_set">El fondo todavía no está puesto.</string>
+    <string name="status_active">Cámara activa: el fondo se está viendo detrás de los iconos.</string>
+    <string name="status_inactive">Fondo puesto, cámara apagada.</string>
+
+    <string name="action_set_wallpaper">Poner el fondo</string>
+    <string name="action_start">Activar cámara</string>
+    <string name="action_stop">Desactivar</string>
+    <string name="action_change_wallpaper">Cambiar fondo del sistema</string>
+    <string name="use_front_camera">Usar cámara frontal</string>
+
+    <string name="limits">Mientras la cámara esté activa, el punto verde de privacidad se queda encendido y la app de cámara o la linterna pueden dejar de funcionar: la cámara es de un solo dueño. También gasta batería, así que está pensado para ratos. Al desactivar, el fondo queda negro; Android no deja recuperar el fondo anterior desde una app.</string>
+
+    <string name="notification_channel">Cámara del fondo</string>
+    <string name="notification_title">Cámara activa en el fondo</string>
+    <string name="notification_text">Toca para volver a la app y desactivarla.</string>
+
+    <string name="error_camera_permission">Sin permiso de cámara no se puede usar el fondo.</string>
+    <string name="error_no_picker">Este móvil no tiene un selector de fondos compatible.</string>
+
+    <string name="wallpaper_description">La cámara en el fondo de pantalla.</string>
+</resources>
