@@ -4,10 +4,10 @@ import android.content.Context
 import java.util.concurrent.CopyOnWriteArraySet
 
 /**
- * Estado compartido entre la Activity y el engine del wallpaper.
+ * Shared state between the Activity and the wallpaper engine.
  *
- * Ambos viven en el mismo proceso, así que una lista de listeners basta para
- * reaccionar al instante; las prefs cubren la muerte y recreación del proceso.
+ * Both live in the same process, so a listener list is enough to react
+ * immediately; prefs cover process death and recreation.
  */
 object WallpaperState {
 

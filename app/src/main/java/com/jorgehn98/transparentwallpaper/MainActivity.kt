@@ -41,8 +41,8 @@ class MainActivity : Activity() {
     override fun onResume() {
         super.onResume()
         WallpaperState.load(this)
-        // Si el proceso se reinició con la cámara marcada como activa, el
-        // servicio en primer plano puede haberse quedado por el camino.
+        // If the process restarted with the camera marked as active, the
+        // foreground service may have been left behind.
         if (WallpaperState.active && isOurWallpaperSet()) {
             CameraForegroundService.start(this)
         }
@@ -157,7 +157,7 @@ class MainActivity : Activity() {
                 startActivity(candidate)
                 return
             } catch (e: Exception) {
-                // Probamos el siguiente.
+                // Try the next one.
             }
         }
         Toast.makeText(this, R.string.error_no_picker, Toast.LENGTH_LONG).show()

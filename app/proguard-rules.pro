@@ -1,1 +1,1 @@
-# El codigo no usa reflexion; no hace falta nada especial.
+# No reflection is used, so no special rules are needed.

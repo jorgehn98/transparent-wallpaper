@@ -14,11 +14,11 @@ import android.util.Range
 import android.view.Surface
 
 /**
- * Abre la cámara y manda los frames al surface del wallpaper.
+ * Opens the camera and sends frames to the wallpaper surface.
  *
- * Todo el ciclo de vida corre en su propio hilo. Cuando otra app se lleva la
- * cámara, el sistema nos da onDisconnected y hay que cerrar y esperar; no se
- * puede conservar la sesión en pausa.
+ * The whole lifecycle runs on its own thread. When another app takes the
+ * camera, the system calls onDisconnected and we have to close and wait; the
+ * session cannot be kept paused.
  */
 class CameraController(
     context: Context,
@@ -26,7 +26,7 @@ class CameraController(
     private val outputSurface: Surface,
 ) {
 
-    /** Se llama cuando perdemos la cámara (otra app la cogió) o falla algo. */
+    /** Called when we lose the camera (another app took it) or something fails. */
     var onLost: ((String) -> Unit)? = null
 
     private val manager = context.getSystemService(CameraManager::class.java)

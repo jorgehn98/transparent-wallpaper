@@ -12,11 +12,11 @@ import android.view.Surface
 import android.view.SurfaceHolder
 
 /**
- * Live wallpaper que pinta la cámara en tiempo real.
+ * Live wallpaper that draws the camera in real time.
  *
- * El engine se dibuja solo cuando es visible y la cámara está activada desde la
- * app. Si otra aplicación abre la cámara, el sistema nos la quita: se cierra y
- * se reintenta cuando vuelve a estar libre.
+ * The engine only draws while it is visible and the camera is enabled from the
+ * app. If another app opens the camera, the system takes it away: we close and
+ * retry when it is free again.
  */
 class CameraWallpaperService : WallpaperService() {
 
@@ -49,7 +49,7 @@ class CameraWallpaperService : WallpaperService() {
             }
 
             override fun onCameraUnavailable(cameraId: String) {
-                // Si la tenemos nosotros, el cierre llega por onDisconnected.
+                // If we own it, the close arrives through onDisconnected.
                 if (cameraId != currentCameraId || camera != null) return
                 mainHandler.post { camera = null }
             }
@@ -158,8 +158,8 @@ class CameraWallpaperService : WallpaperService() {
             controller.close()
             if (!visible || !WallpaperState.active) return
 
-            // La cámara puede tardar un momento en quedar libre (por ejemplo,
-            // justo después de cerrarla nosotros). Reintentos acotados.
+            // The camera can take a moment to become free (for example, right
+            // after we close it). Bounded retries.
             if (retriesLeft > 0) {
                 retriesLeft--
                 mainHandler.postDelayed({ startCamera() }, RETRY_DELAY_MS)

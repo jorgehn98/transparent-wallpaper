@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Fondo transparente</string>
+    <string name="app_name">Transparent Wallpaper</string>
 
-    <string name="intro">Pone la cámara en el fondo de pantalla: lo que hay delante del móvil se ve detrás de los iconos. La cámara solo se enciende cuando tú pulsas el botón.</string>
+    <string name="intro">Puts the camera on your wallpaper: whatever is in front of the phone shows up behind the icons. The camera only turns on when you press the button.</string>
 
-    <string name="status_not_set">El fondo todavía no está puesto.</string>
-    <string name="status_active">Cámara activa: el fondo se está viendo detrás de los iconos.</string>
-    <string name="status_inactive">Fondo puesto, cámara apagada.</string>
+    <string name="status_not_set">The wallpaper is not set yet.</string>
+    <string name="status_active">Camera on: the wallpaper is running behind the icons.</string>
+    <string name="status_inactive">Wallpaper set, camera off.</string>
 
-    <string name="action_set_wallpaper">Poner el fondo</string>
-    <string name="action_start">Activar cámara</string>
-    <string name="action_stop">Desactivar</string>
-    <string name="action_change_wallpaper">Cambiar fondo del sistema</string>
-    <string name="use_front_camera">Usar cámara frontal</string>
+    <string name="action_set_wallpaper">Set wallpaper</string>
+    <string name="action_start">Turn camera on</string>
+    <string name="action_stop">Turn off</string>
+    <string name="action_change_wallpaper">Change system wallpaper</string>
+    <string name="use_front_camera">Use front camera</string>
 
-    <string name="limits">Mientras la cámara esté activa, el punto verde de privacidad se queda encendido y la app de cámara o la linterna pueden dejar de funcionar: la cámara es de un solo dueño. También gasta batería, así que está pensado para ratos. Al desactivar, el fondo queda negro; Android no deja recuperar el fondo anterior desde una app.</string>
+    <string name="limits">While the camera is on, the privacy dot stays lit and the stock camera app or the flashlight may stop working: only one app can own the camera. It also drains battery, so it is meant for short sessions. Turning it off leaves a black wallpaper; Android does not let an app restore the previous one.</string>
 
-    <string name="notification_channel">Cámara del fondo</string>
-    <string name="notification_title">Cámara activa en el fondo</string>
-    <string name="notification_text">Toca para volver a la app y desactivarla.</string>
+    <string name="notification_channel">Wallpaper camera</string>
+    <string name="notification_title">Camera running on the wallpaper</string>
+    <string name="notification_text">Tap to open the app and turn it off.</string>
 
-    <string name="error_camera_permission">Sin permiso de cámara no se puede usar el fondo.</string>
-    <string name="error_no_picker">Este móvil no tiene un selector de fondos compatible.</string>
+    <string name="error_camera_permission">The wallpaper cannot work without camera permission.</string>
+    <string name="error_no_picker">This device has no compatible wallpaper picker.</string>
 
-    <string name="wallpaper_description">La cámara en el fondo de pantalla.</string>
+    <string name="wallpaper_description">The camera on your wallpaper.</string>
 </resources>

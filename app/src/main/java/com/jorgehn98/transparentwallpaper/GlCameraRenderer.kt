@@ -15,11 +15,11 @@ import java.nio.FloatBuffer
 import kotlin.math.abs
 
 /**
- * Pinta los frames de la cámara en el surface del wallpaper.
+ * Draws camera frames on the wallpaper surface.
  *
- * El frame llega como textura externa y se dibuja directamente: sin pasar por
- * bitmaps ni por CPU, que es lo único que aguanta 720p a 30 fps sin calentar
- * el teléfono de más. Todo el estado GL vive en el hilo de render.
+ * Frames arrive as an external texture and are drawn directly: no bitmaps and
+ * no CPU copies, which is the only way 720p at 30 fps stays cool. All GL state
+ * lives on the render thread.
  */
 class GlCameraRenderer(
     private val windowSurface: Surface,
@@ -247,15 +247,15 @@ class GlCameraRenderer(
     }
 
     /**
-     * La cámara no tiene el mismo aspecto que la pantalla. En vez de estirar
-     * la imagen, se recorta el centro para llenar el fondo.
+     * The camera does not have the same aspect as the screen. Instead of
+     * stretching the image, crop the centre so it fills the wallpaper.
      */
     private fun cropScale(): FloatArray {
         if (viewWidth <= 0 || viewHeight <= 0) return floatArrayOf(1f, 1f)
 
-        // La cámara suele entregar el frame girado 90º y la matriz de textura
-        // lo deshace. Si la matriz intercambia ejes, el aspecto visible es el
-        // inverso del buffer.
+        // The camera usually delivers the frame rotated 90 degrees and the
+        // texture matrix undoes it. If the matrix swaps axes, the visible
+        // aspect is the inverse of the buffer.
         val swapped = abs(texMatrix[0]) < abs(texMatrix[1])
         val imageAspect = if (swapped) {
             bufferHeight.toFloat() / bufferWidth

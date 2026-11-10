@@ -1,71 +1,71 @@
-# Fondo transparente
+# Transparent Wallpaper
 
-Live wallpaper para Android que pone la cámara en el fondo de pantalla: lo que hay delante del móvil se ve detrás de los iconos, como si la pantalla fuese transparente. Es un juguete para ratos, no una app para llevar siempre encendida.
+An Android live wallpaper that puts the camera on your screen: whatever is in front of the phone shows up behind the icons, as if the display were transparent. It is a toy for short sessions, not something to leave running all day.
 
-![Estado](https://img.shields.io/badge/estado-v0.1.1-blue)
+![Status](https://img.shields.io/badge/status-v0.1.1-blue)
 
-Probado en un Galaxy S24 Ultra con Android 17, tanto en el inicio como en la pantalla de bloqueo. En otros fabricantes el bloqueo puede no mostrarlo.
+Tested on a Galaxy S24 Ultra running Android 17, on both the home and lock screens. Other manufacturers may not show live wallpapers on the lock screen.
 
-## Uso
+## Usage
 
-1. Abre la app y pulsa **Poner el fondo**. Android abre el selector de fondos animados: confirma ahí.
-2. Vuelve a la app y pulsa **Activar cámara**. La primera vez pedirá permiso de cámara y de notificaciones.
-3. Ve al inicio: lo que vea la cámara estará de fondo.
-4. Para apagarla, abre la app y pulsa **Desactivar**.
+1. Open the app and tap **Set wallpaper**. Android opens the live wallpaper picker; confirm there.
+2. Back in the app, tap **Turn camera on**. The first time it asks for camera and notification permissions.
+3. Go to the home screen: whatever the camera sees is now the background.
+4. To stop it, open the app and tap **Turn off**.
 
-El fondo se queda puesto y en negro cuando la cámara está apagada. Android no permite a una app leer el fondo anterior, así que para recuperar el que tenías usa **Cambiar fondo del sistema** y elige el que quieras. Si el anterior era otro fondo animado, el sistema lo ofrece en el mismo selector.
+The wallpaper stays set and turns black while the camera is off. Android does not let an app read the previous wallpaper, so to get yours back use **Change system wallpaper** and pick it again. If it was another live wallpaper, the system offers it in the same picker.
 
-## Cómo funciona
+## How it works
 
-Tres piezas, sin dependencias externas más allá del SDK:
+Three pieces, no dependencies beyond the SDK:
 
-- `CameraWallpaperService` es el live wallpaper. Dibuja los frames de la cámara en su surface con OpenGL ES 2: el frame llega como textura externa (`GL_TEXTURE_EXTERNAL_OES`) y se pinta directamente, sin pasar por bitmaps ni por CPU.
-- `CameraController` abre la cámara con Camera2 en 720p y 30 fps, y manda los frames a la textura. Si otra app se lleva la cámara, el sistema corta la sesión y el wallpaper reintenta cuando vuelve a estar libre.
-- `CameraForegroundService` mantiene el proceso en primer plano mientras la cámara está encendida. Desde Android 9 una app en segundo plano pierde la cámara, y el proceso de un wallpaper no cuenta como primer plano aunque tenga un surface visible.
+- `CameraWallpaperService` is the live wallpaper. It draws camera frames on its surface with OpenGL ES 2: each frame arrives as an external texture (`GL_TEXTURE_EXTERNAL_OES`) and is drawn directly, with no bitmaps and no CPU copies.
+- `CameraController` opens the camera with Camera2 at 720p and 30 fps and feeds frames to that texture. If another app takes the camera, the system ends the session and the wallpaper retries once it is free.
+- `CameraForegroundService` keeps the process in the foreground while the camera is on. Since Android 9 a background app loses the camera, and a wallpaper process does not count as foreground even with a visible surface.
 
-La cámara solo se abre cuando la activas y el wallpaper está visible; al apagar la pantalla o al pasar a otra app se cierra.
+The camera only opens when you enable it and the wallpaper is visible; it closes when the screen turns off or another app comes to the front.
 
-## Requisitos
+## Requirements
 
-- Android 11 (API 30) o superior.
-- Cámara trasera o delantera.
-- Para bloquear la pantalla hace falta un fabricante que respete el live wallpaper en el lockscreen. En Pixel y Samsung suele funcionar; en HyperOS y algunas capas de Oppo/vivo no.
+- Android 11 (API 30) or newer.
+- A front or rear camera.
+- For the lock screen, an OEM that honours live wallpapers there. Pixel and Samsung usually do; HyperOS and some Oppo/vivo builds do not.
 
-## Compilar
+## Build
 
-Necesitas JDK 17 o superior y el SDK de Android (API 36). Crea `local.properties` con la ruta del SDK:
+You need JDK 17 or newer and the Android SDK (API 36). Create `local.properties` with the SDK path:
 
 ```properties
-sdk.dir=/ruta/a/Android/Sdk
+sdk.dir=/path/to/Android/Sdk
 ```
 
 ```sh
 ./gradlew assembleDebug
 ```
 
-El APK sale en `app/build/outputs/apk/debug/app-debug.apk`.
+The APK lands in `app/build/outputs/apk/debug/app-debug.apk`.
 
-Para instalarlo en un móvil conectado por USB con depuración activada:
+To install it on a device connected over USB with debugging enabled:
 
 ```sh
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-El build de release está minificado pero sin firmar: si quieres distribuirlo, configura tu propia firma en `app/build.gradle.kts`.
+The release build is minified but unsigned: configure your own signing in `app/build.gradle.kts` if you want to distribute it.
 
-## Limitaciones conocidas
+## Known limitations
 
-- La cámara es de un solo dueño. Mientras el fondo la tiene abierta, la app de cámara y la linterna pueden no funcionar o hacer que el fondo se congele. Es lo esperado: al cerrarla, el fondo se reconecta.
-- El punto verde de privacidad de Android 12+ se queda encendido todo el rato. El sistema lo dibuja y no se puede ocultar sin root.
-- Consume batería y calienta. Es la razón de quedarse en 720p en vez de 1080p, y de cerrar la cámara en cuanto el wallpaper no se ve.
-- La ilusión no es perfecta: la cámara no está donde están tus ojos, así que el paralaje no coincide del todo.
-- Si enfocas una fuente de luz o una pantalla en una habitación oscura, el autoexposímetro la quema. Es el comportamiento normal de la cámara, no un fallo del render.
-- La orientación se calcula para el fondo en vertical. Si el dispositivo gira a horizontal y el lanzador rota, la imagen puede quedarse girada.
+- The camera has a single owner. While the wallpaper holds it, the camera app or the flashlight may fail or freeze the wallpaper. That is expected: closing them reconnects the wallpaper.
+- The Android 12+ privacy dot stays on the whole time. The system draws it and it cannot be hidden without root.
+- It drains battery and heats up. That is why it stays at 720p instead of 1080p, and why the camera closes as soon as the wallpaper is not visible.
+- The illusion is not perfect: the camera is not where your eyes are, so the parallax does not quite match.
+- Pointing at a bright screen in a dark room blows out the exposure. That is the camera's auto-exposure, not the renderer.
+- Orientation is handled for a portrait wallpaper. If the device rotates to landscape and the launcher follows, the image can end up rotated.
 
-## Privacidad
+## Privacy
 
-La app no pide permiso de internet y no envía nada a ningún sitio. Los frames de la cámara se dibujan y se descartan; no se guardan ni se comparten.
+The app does not request internet access and sends nothing anywhere. Camera frames are drawn and discarded; they are never stored or shared.
 
-## Licencia
+## License
 
-MIT. Mira [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

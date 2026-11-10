@@ -11,11 +11,11 @@ import android.content.pm.ServiceInfo
 import android.os.IBinder
 
 /**
- * Mantiene el proceso en primer plano mientras el wallpaper usa la cámara.
+ * Keeps the process in the foreground while the wallpaper uses the camera.
  *
- * Desde Android 9 el sistema corta la cámara a las apps en segundo plano, y el
- * proceso de un wallpaper no cuenta como primer plano aunque tenga surface
- * visible. El servicio no toca la cámara: solo ancla el proceso.
+ * Since Android 9 the system cuts camera access for background apps, and a
+ * wallpaper process does not count as foreground even with a visible surface.
+ * This service does not touch the camera: it only anchors the process.
  */
 class CameraForegroundService : Service() {
 
@@ -56,7 +56,7 @@ class CameraForegroundService : Service() {
     }
 
     override fun onDestroy() {
-        // Red de seguridad: si el servicio muere, la cámara debe apagarse.
+        // Safety net: if the service dies, the camera must turn off.
         WallpaperState.setActive(this, false)
         super.onDestroy()
     }

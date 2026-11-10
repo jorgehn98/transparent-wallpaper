@@ -8,7 +8,7 @@ import android.hardware.camera2.CameraManager
 import android.util.Size
 import kotlin.math.abs
 
-/** Utilidades para elegir lente y tamaño de captura. */
+/** Helpers to pick the lens and the capture size. */
 object CameraLens {
 
     fun cameraId(context: Context, front: Boolean): String? {
@@ -32,8 +32,8 @@ object CameraLens {
     }
 
     /**
-     * 720p es el objetivo: suficiente para que el efecto se vea y la mitad de
-     * trabajo que 1080p. Si no existe, lo más parecido en aspecto y tamaño.
+     * 720p is the target: enough for the effect and half the work of 1080p.
+     * If it is missing, the closest match in aspect and size.
      */
     fun size(context: Context, cameraId: String): Size {
         val manager = context.getSystemService(CameraManager::class.java)
